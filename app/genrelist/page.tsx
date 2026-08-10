@@ -7,8 +7,12 @@ interface Genre {
   name: string;
 }
 
+interface genreList {
+  genres: Genre[];
+}
+
 export default async function GenresPage(): Promise<JSX.Element> {
-  const { genres: allGenres } = await getGenres();
+  const { genres: allGenres }: genreList = await getGenres();
   const featuredGenres = [
     "Action",
     "Comedy",
