@@ -9,6 +9,10 @@ interface Genres {
   name: string;
 }
 
+interface genreList {
+  genres: Genres[];
+}
+
 export default async function Home(): Promise<JSX.Element> {
   const featuredGenres = [
     "Action",
@@ -20,10 +24,11 @@ export default async function Home(): Promise<JSX.Element> {
   ];
 
   const { results } = await getTrending();
-  const allGenres: object | any = await getGenres();
+  const allGenres: genreList = await getGenres();
   const genre = allGenres?.genres.filter((genre: Genres) =>
     featuredGenres.includes(genre.name),
   );
+
   return (
     <main>
       <Hero movies={results} />
