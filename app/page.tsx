@@ -1,0 +1,34 @@
+import GenreList from "@/components/genrelist";
+import Hero from "@/components/hero";
+import MovieGrid from "@/components/moviegrid";
+import { getGenres, getTrending } from "@/lib/tmdb";
+import { JSX } from "react/jsx-runtime";
+
+interface Genres {
+  id: number;
+  name: string;
+}
+
+export default async function Home(): Promise<JSX.Element> {
+  const featuredGenres = [
+    "Action",
+    "Comedy",
+    "Horror",
+    "Science Fiction",
+    "Drama",
+    "Romance",
+  ];
+
+  const { results } = await getTrending();
+  const allGenres: object | any = await getGenres();
+  const genre = allGenres?.genres.filter((genre: Genres) =>
+    featuredGenres.includes(genre.name),
+  );
+  return (
+    <main>
+      <Hero movies={results} />
+      <MovieGrid title="Trending This Week" movies={results} />
+      <GenreList genres={genre} />
+    </main>
+  );
+}
