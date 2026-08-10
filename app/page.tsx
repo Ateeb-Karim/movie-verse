@@ -3,6 +3,7 @@ import Hero from "@/components/hero";
 import MovieGrid from "@/components/moviegrid";
 import { getGenres, getTrending } from "@/lib/tmdb";
 import { JSX } from "react/jsx-runtime";
+import Loading from "./loading";
 
 interface Genres {
   id: number;
@@ -13,24 +14,15 @@ interface genreList {
   genres: Genres[];
 }
 
-interface MovieResults {
-  results: Movie[];
-}
-
-interface Movie {
-  adult: boolean;
-  backdrop_path: string;
+interface MovieResult {
   id: number;
-  original_title: string;
-  original_language: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
+  backdrop_path: string;
   title: string;
-  video: boolean;
+  overview: string;
   vote_average: number;
-  vote_count: number;
+  release_date: string;
+  runtime?: number;
+  poster_path: string;
 }
 
 export default async function Home(): Promise<JSX.Element> {
@@ -43,7 +35,8 @@ export default async function Home(): Promise<JSX.Element> {
     "Romance",
   ];
 
-  const { results }: MovieResults = await getTrending();
+  const data = await getTrending();
+  const { results }: { results: MovieResult[] } = data;
   const { genres }: genreList = await getGenres();
   const genre = genres.filter((genre: Genres) =>
     featuredGenres.includes(genre.name),
@@ -51,7 +44,7 @@ export default async function Home(): Promise<JSX.Element> {
 
   return (
     <main>
-      <Hero movies={results} />
+      {results ? <Hero movies={results} /> : <Loading />}
       <MovieGrid title="Trending This Week" movies={results} />
       <GenreList genres={genre} />
     </main>
