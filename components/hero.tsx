@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { getPoster } from "@/lib/tmdb";
 import { JSX } from "react/jsx-runtime";
+import NotFound from "@/app/not-found";
 
 interface Movie {
   id: number;
@@ -15,7 +16,8 @@ interface Movie {
 }
 
 export default function Hero({ movies }: { movies: Movie[] }): JSX.Element {
-  const slides = movies.slice(0, 5);
+  if (!movies) return NotFound();
+  const slides: Movie[] = movies.slice(0, 5);
   const [index, setIndex] = useState<number>(0);
 
   const next = useCallback((): void => {

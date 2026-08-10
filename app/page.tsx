@@ -13,6 +13,26 @@ interface genreList {
   genres: Genres[];
 }
 
+interface MovieResults {
+  results: Movie[];
+}
+
+interface Movie {
+  adult: boolean;
+  backdrop_path: string;
+  id: number;
+  original_title: string;
+  original_language: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
 export default async function Home(): Promise<JSX.Element> {
   const featuredGenres = [
     "Action",
@@ -23,7 +43,7 @@ export default async function Home(): Promise<JSX.Element> {
     "Romance",
   ];
 
-  const { results } = await getTrending();
+  const { results }: MovieResults = await getTrending();
   const { genres }: genreList = await getGenres();
   const genre = genres.filter((genre: Genres) =>
     featuredGenres.includes(genre.name),
