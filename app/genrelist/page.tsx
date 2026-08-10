@@ -21,8 +21,8 @@ export default async function GenresPage(): Promise<JSX.Element> {
     "Romance",
   ];
 
-  const allGenres: Genres = await getGenres();
-  const genre = allGenres.genres.filter((genre: Genre) =>
+  const { genres }: Genres = await getGenres();
+  const genre = genres.filter((genre: Genre) =>
     featuredGenres.includes(genre.name),
   );
 

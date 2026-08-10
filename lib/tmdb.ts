@@ -40,6 +40,11 @@ const getGenres = async () => {
     },
   });
 
+  if (!response.ok) {
+    console.log("failed to fetch data, response status:", response.status);
+    return { genres: [] };
+  }
+
   const data = await response.json();
 
   return data;

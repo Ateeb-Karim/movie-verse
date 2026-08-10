@@ -24,8 +24,8 @@ export default async function Home(): Promise<JSX.Element> {
   ];
 
   const { results } = await getTrending();
-  const allGenres: genreList = await getGenres();
-  const genre = allGenres?.genres.filter((genre: Genres) =>
+  const { genres }: genreList = await getGenres();
+  const genre = genres.filter((genre: Genres) =>
     featuredGenres.includes(genre.name),
   );
 
