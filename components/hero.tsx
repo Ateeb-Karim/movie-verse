@@ -3,9 +3,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { getPoster } from "@/lib/tmdb";
 import { JSX } from "react/jsx-runtime";
-import NotFound from "@/app/not-found";
 
-interface Movie {
+interface MovieResult {
   id: number;
   backdrop_path: string;
   title: string;
@@ -15,10 +14,13 @@ interface Movie {
   runtime?: number;
 }
 
-export default function Hero({ movies }: { movies: Movie[] }): JSX.Element {
-  if (!movies) return NotFound();
-  const slides: Movie[] = movies.slice(0, 5);
+export default function Hero({
+  movies,
+}: {
+  movies: MovieResult[];
+}): JSX.Element {
   const [index, setIndex] = useState<number>(0);
+  const slides: MovieResult[] = movies.slice(0, 5);
 
   const next = useCallback((): void => {
     setIndex((i) => (i + 1) % slides.length);
@@ -37,14 +39,14 @@ export default function Hero({ movies }: { movies: Movie[] }): JSX.Element {
     return <div className="text-white text-2xl">No movie found</div>;
   }
 
-  const movie: Movie = slides[index];
+  const movie: MovieResult = slides[index];
   const vote_average: string = movie.vote_average.toFixed(1);
   const release_date: string = movie.release_date.slice(0, 4);
 
   return (
     <section className="relative h-[70vh] w-full overflow-hidden rounded-b-2xl group">
       {slides.map(
-        (movie: Movie, i: number): JSX.Element => (
+        (movie: MovieResult, i: number): JSX.Element => (
           <img
             key={movie.id}
             src={getPoster(movie.backdrop_path)}
